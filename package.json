@@ -1,0 +1,26 @@
+{
+  "name": "dnuckles-bot",
+  "version": "1.0.0",
+  "description": "Food review bot - express, puppeteer, GPT-3",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamezmca/dnuckles-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jamezmca/dnuckles-bot/issues"
+  },
+  "homepage": "https://github.com/jamezmca/dnuckles-bot#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15",
+    "puppeteer": "^13.1.3"
+  }
+}
