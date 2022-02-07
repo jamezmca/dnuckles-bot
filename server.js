@@ -30,16 +30,29 @@ app.get('/', async (req, res) => {
         waitUntil: 'networkidle2',
     })
     await page.click('.fGwNR._G.B-.z._S.c.Wc.ddFHE.fRPQK.w.fNnhN.brHeh')
-    await page.waitForTimeout(3000)
+
     await page.waitForSelector('iframe')
-    console.log('success')
-    await page.click('#ssoButtons button')
+    console.log('iframe loaded')
+
+    const elementHandle = await page.$('iframe[src="/RegistrationController?flow=sign_up_and_save&flowOrigin=login&pid=40486&hideNavigation=true&userRequestedForce=true&returnTo=&isLithium=true&locationId=-1&requireSecure=false"]')
+
+    const frame = await elementHandle.contentFrame()
+    await frame.waitForTimeout(3000)
+    await frame.waitForSelector('#ssoButtons')
+    await frame.click('.regEmailContinue')
+
+    await frame.waitForSelector('#regSignIn')
+    await frame.waitForSelector('.showHidePasswordButton')
+    console.log('found sign in')
+    await frame.waitForTimeout(3000)
+    await frame.click('#regSignIn .coreRegTextLink')
+    console.log('clicked')
+    // await frame.click('button')
+
+
+    await frame.waitForTimeout(5000)
     await page.waitForTimeout(10000)
-
-
-
-
-    // await browser.close();
+    await browser.close();
 
     res.send({ message: 'hello' })
 })
