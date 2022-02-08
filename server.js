@@ -1,6 +1,6 @@
 const app = (require('express'))()
 const puppeteer = require('puppeteer')
-
+const port = 8008
 const websites = [
     {
         name: 'Tripadvisor',
@@ -16,81 +16,131 @@ const names = ["Aaran", "Aaren", "Aarez", "Aarman", "Aaron", "Aaron-James", "Aar
     "Mohammed", "Mohanad", "Mohd", "Momin", "Momooreoluwa", "Montague", "Montgomery", "Monty", "Moore", "Moosa", "Moray", "Morgan", "Morgyn", "Morris", "Morton", "Moshy", "Motade", "Moyes", "Msughter", "Mueez", "Muhamadjavad", "Muhammad", "Muhammed", "Muhsin", "Muir", "Munachi", "Muneeb", "Mungo", "Munir", "Munmair", "Munro", "Murdo", "Murray", "Murrough", "Murry", "Musa", "Musse", "Mustafa", "Mustapha", "Muzammil", "Muzzammil", "Mykie", "Myles", "Mylo", "Nabeel", "Nadeem", "Nader", "Nagib", "Naif", "Nairn", "Narvic", "Nash", "Nasser", "Nassir", "Natan", "Nate", "Nathan", "Nathanael", "Nathanial", "Nathaniel", "Nathan-Rae", "Nawfal", "Nayan", "Neco", "Neil", "Nelson", "Neo", "Neshawn", "Nevan", "Nevin", "Ngonidzashe", "Nial", "Niall", "Nicholas", "Nick", "Nickhill", "Nicki", "Nickson", "Nicky", "Nico", "Nicodemus", "Nicol", "Nicolae", "Nicolas", "Nidhish", "Nihaal", "Nihal", "Nikash", "Nikhil", "Niki", "Nikita", "Nikodem", "Nikolai", "Nikos", "Nilav", "Niraj", "Niro", "Niven", "Noah", "Noel", "Nolan", "Noor", "Norman", "Norrie", "Nuada", "Nyah", "Oakley", "Oban", "Obieluem", "Obosa", "Odhran", "Odin", "Odynn", "Ogheneochuko", "Ogheneruno", "Ohran", "Oilibhear", "Oisin", "Ojima-Ojo", "Okeoghene", "Olaf", "Ola-Oluwa", "Olaoluwapolorimi", "Ole", "Olie", "Oliver", "Olivier", "Oliwier", "Ollie", "Olurotimi", "Oluwadamilare", "Oluwadamiloju", "Oluwafemi", "Oluwafikunayomi", "Oluwalayomi", "Oluwatobiloba", "Oluwatoni", "Omar", "Omri", "Oran", "Orin", "Orlando", "Orley", "Orran", "Orrick", "Orrin", "Orson", "Oryn", "Oscar", "Osesenagha", "Oskar", "Ossian", "Oswald", "Otto", "Owain", "Owais", "Owen", "Owyn", "Oz", "Ozzy", "Pablo", "Pacey", "Padraig", "Paolo", "Pardeepraj", "Parkash", "Parker", "Pascoe", "Pasquale", "Patrick", "Patrick-John", "Patrikas", "Patryk", "Paul", "Pavit", "Pawel", "Pawlo", "Pearce", "Pearse", "Pearsen", "Pedram", "Pedro", "Peirce", "Peiyan", "Pele", "Peni", "Peregrine", "Peter", "Phani", "Philip", "Philippos", "Phinehas", "Phoenix", "Phoevos", "Pierce", "Pierre-Antoine", "Pieter", "Pietro", "Piotr", "Porter", "Prabhjoit", "Prabodhan", "Praise", "Pranav", "Pravin", "Precious", "Prentice", "Presley", "Preston", "Preston-Jay", "Prinay", "Prince", "Prithvi", "Promise", "Puneetpaul", "Pushkar", "Qasim", "Qirui", "Quinlan", "Quinn", "Radmiras", "Raees", "Raegan", "Rafael", "Rafal", "Rafferty", "Rafi", "Raheem", "Rahil", "Rahim", "Rahman", "Raith", "Raithin", "Raja", "Rajab-Ali", "Rajan", "Ralfs", "Ralph", "Ramanas", "Ramit", "Ramone", "Ramsay", "Ramsey", "Rana", "Ranolph", "Raphael", "Rasmus", "Rasul", "Raul", "Raunaq", "Ravin", "Ray", "Rayaan", "Rayan", "Rayane", "Rayden", "Rayhan", "Raymond", "Rayne", "Rayyan", "Raza", "Reace", "Reagan", "Reean", "Reece", "Reed", "Reegan", "Rees", "Reese", "Reeve", "Regan", "Regean", "Reggie", "Rehaan", "Rehan", "Reice", "Reid", "Reigan", "Reilly", "Reily", "Reis", "Reiss", "Remigiusz", "Remo", "Remy", "Ren", "Renars", "Reng", "Rennie", "Reno", "Reo", "Reuben", "Rexford", "Reynold", "Rhein", "Rheo", "Rhett", "Rheyden", "Rhian", "Rhoan", "Rholmark", "Rhoridh", "Rhuairidh", "Rhuan", "Rhuaridh", "Rhudi", "Rhy", "Rhyan", "Rhyley", "Rhyon", "Rhys", "Rhys-Bernard", "Rhyse", "Riach", "Rian", "Ricards", "Riccardo", "Ricco", "Rice", "Richard", "Richey", "Richie", "Ricky", "Rico", "Ridley", "Ridwan", "Rihab", "Rihan", "Rihards", "Rihonn", "Rikki", "Riley", "Rio", "Rioden", "Rishi", "Ritchie", "Rivan", "Riyadh", "Riyaj", "Roan", "Roark", "Roary", "Rob", "Robbi", "Robbie", "Robbie-lee", "Robby", "Robert", "Robert-Gordon", "Robertjohn", "Robi", "Robin", "Rocco", "Roddy", "Roderick", "Rodrigo", "Roen", "Rogan", "Roger", "Rohaan", "Rohan", "Rohin", "Rohit", "Rokas", "Roman", "Ronald", "Ronan", "Ronan-Benedict", "Ronin", "Ronnie", "Rooke", "Roray", "Rori", "Rorie", "Rory", "Roshan", "Ross", "Ross-Andrew", "Rossi", "Rowan", "Rowen", "Roy", "Ruadhan", "Ruaidhri", "Ruairi", "Ruairidh", "Ruan", "Ruaraidh", "Ruari", "Ruaridh", "Ruben", "Rubhan", "Rubin", "Rubyn", "Rudi", "Rudy", "Rufus", "Rui", "Ruo", "Rupert", "Ruslan", "Russel", "Russell", "Ryaan", "Ryan", "Ryan-Lee", "Ryden", "Ryder", "Ryese", "Ryhs", "Rylan", "Rylay", "Rylee", "Ryleigh", "Ryley", "Rylie", "Ryo", "Ryszard", "Saad", "Sabeen", "Sachkirat", "Saffi", "Saghun", "Sahaib", "Sahbian", "Sahil", "Saif", "Saifaddine", "Saim", "Sajid", "Sajjad", "Salahudin", "Salman", "Salter", "Salvador", "Sam", "Saman", "Samar", "Samarjit", "Samatar", "Sambrid", "Sameer", "Sami", "Samir", "Sami-Ullah", "Samual", "Samuel", "Samuela", "Samy", "Sanaullah", "Sandro", "Sandy", "Sanfur", "Sanjay", "Santiago", "Santino", "Satveer", "Saul", "Saunders", "Savin", "Sayad", "Sayeed", "Sayf", "Scot", "Scott", "Scott-Alexander", "Seaan", "Seamas", "Seamus", "Sean", "Seane", "Sean-James", "Sean-Paul", "Sean-Ray", "Seb", "Sebastian", "Sebastien", "Selasi", "Seonaidh", "Sephiroth", "Sergei", "Sergio", "Seth", "Sethu", "Seumas", "Shaarvin", "Shadow", "Shae", "Shahmir", "Shai", "Shane", "Shannon", "Sharland", "Sharoz", "Shaughn", "Shaun", "Shaunpaul", "Shaun-Paul", "Shaun-Thomas", "Shaurya", "Shaw", "Shawn", "Shawnpaul", "Shay", "Shayaan", "Shayan", "Shaye", "Shayne", "Shazil", "Shea", "Sheafan", "Sheigh", "Shenuk", "Sher", "Shergo", "Sheriff", "Sherwyn", "Shiloh", "Shiraz", "Shreeram", "Shreyas", "Shyam", "Siddhant", "Siddharth", "Sidharth", "Sidney", "Siergiej", "Silas", "Simon", "Sinai", "Skye", "Sofian", "Sohaib", "Sohail", "Soham", "Sohan", "Sol", "Solomon", "Sonneey", "Sonni", "Sonny", "Sorley", "Soul", "Spencer", "Spondon", "Stanislaw", "Stanley", "Stefan", "Stefano", "Stefin", "Stephen", "Stephenjunior", "Steve", "Steven", "Steven-lee", "Stevie", "Stewart", "Stewarty", "Strachan", "Struan", "Stuart", "Su", "Subhaan", "Sudais", "Suheyb", "Suilven", "Sukhi", "Sukhpal", "Sukhvir", "Sulayman", "Sullivan", "Sultan", "Sung", "Sunny", "Suraj", "Surien", "Sweyn", "Syed", "Sylvain", "Symon", "Szymon", "Tadd", "Taddy", "Tadhg", "Taegan", "Taegen", "Tai", "Tait", "Taiwo", "Talha", "Taliesin", "Talon", "Talorcan", "Tamar", "Tamiem", "Tammam", "Tanay", "Tane", "Tanner", "Tanvir", "Tanzeel", "Taonga", "Tarik", "Tariq-Jay", "Tate", "Taylan", "Taylar", "Tayler", "Taylor", "Taylor-Jay", "Taylor-Lee", "Tayo", "Tayyab", "Tayye", "Tayyib", "Teagan", "Tee", "Teejay", "Tee-jay", "Tegan", "Teighen", "Teiyib", "Te-Jay", "Temba", "Teo", "Teodor", "Teos", "Terry", "Teydren", "Theo", "Theodore", "Thiago", "Thierry", "Thom", "Thomas", "Thomas-Jay", "Thomson", "Thorben", "Thorfinn", "Thrinei", "Thumbiko", "Tiago", "Tian", "Tiarnan", "Tibet", "Tieran", "Tiernan", "Timothy", "Timucin", "Tiree", "Tisloh", "Titi", "Titus", "Tiylar", "TJ", "Tjay", "T-Jay", "Tobey", "Tobi", "Tobias", "Tobie", "Toby", "Todd", "Tokinaga", "Toluwalase", "Tom", "Tomas", "Tomasz", "Tommi-Lee", "Tommy", "Tomson", "Tony", "Torin", "Torquil", "Torran", "Torrin", "Torsten", "Trafford", "Trai", "Travis", "Tre", "Trent", "Trey", "Tristain", "Tristan", "Troy", "Tubagus", "Turki", "Turner", "Ty", "Ty-Alexander", "Tye", "Tyelor", "Tylar", "Tyler", "Tyler-James", "Tyler-Jay", "Tyllor", "Tylor", "Tymom", "Tymon", "Tymoteusz", "Tyra", "Tyree", "Tyrnan", "Tyrone", "Tyson", "Ubaid", "Ubayd", "Uchenna", "Uilleam", "Umair", "Umar", "Umer", "Umut", "Urban", "Uri", "Usman", "Uzair", "Uzayr", "Valen", "Valentin", "Valentino", "Valery", "Valo", "Vasyl", "Vedantsinh", "Veeran", "Victor", "Victory", "Vinay", "Vince", "Vincent", "Vincenzo", "Vinh", "Vinnie", "Vithujan", "Vladimir", "Vladislav", "Vrishin", "Vuyolwethu", "Wabuya", "Wai", "Walid", "Wallace", "Walter", "Waqaas", "Warkhas", "Warren", "Warrick", "Wasif", "Wayde", "Wayne", "Wei", "Wen", "Wesley", "Wesley-Scott", "Wiktor", "Wilkie", "Will", "William", "William-John", "Willum", "Wilson", "Windsor", "Wojciech", "Woyenbrakemi", "Wyatt", "Wylie", "Wynn", "Xabier", "Xander", "Xavier", "Xiao", "Xida", "Xin", "Xue", "Yadgor", "Yago", "Yahya", "Yakup", "Yang", "Yanick", "Yann", "Yannick", "Yaseen", "Yasin", "Yasir", "Yassin", "Yoji", "Yong", "Yoolgeun", "Yorgos", "Youcef", "Yousif", "Youssef", "Yu", "Yuanyu", "Yuri", "Yusef", "Yusuf", "Yves", "Zaaine", "Zaak", "Zac", "Zach", "Zachariah", "Zacharias", "Zacharie", "Zacharius", "Zachariya", "Zachary", "Zachary-Marc", "Zachery", "Zack", "Zackary", "Zaid", "Zain", "Zaine", "Zaineddine", "Zainedin", "Zak", "Zakaria", "Zakariya", "Zakary", "Zaki", "Zakir", "Zakk", "Zamaar", "Zander", "Zane", "Zarran", "Zayd", "Zayn", "Zayne", "Ze", "Zechariah", "Zeek", "Zeeshan", "Zeid", "Zein", "Zen", "Zendel", "Zenith", "Zennon", "Zeph", "Zerah", "Zhen", "Zhi", "Zhong", "Zhuo", "Zi", "Zidane", "Zijie", "Zinedine", "Zion", "Zishan", "Ziya", "Ziyaan", "Zohaib", "Zohair", "Zoubaeir", "Zubair", "Zubayr", "Zuriel"]
 const length = names.length
 
+
+// /?url=...
 app.get('/', async (req, res) => {
+    const restaurant = req.query.url
+
+    if (!restaurant) {
+        // await browser.close()
+        return res.status(400).send({ message: 'please add restaurant url' })
+    }
     //could do it async / parallel with Promise.all (websites.map(website => {})....)
     //but we don't wanna overwhelm servers so we're going to do it in series
-    const browser = await puppeteer.launch({
-        headless: false,
-        args: [
-            '--disable-web-security',
-            '--disable-features=IsolateOrigins,site-per-process'
-        ]
+    try {
+        const browser = await puppeteer.launch({
+            headless: false,
+            args: [
+                '--disable-web-security',
+                '--disable-features=IsolateOrigins,site-per-process'
+            ]
 
-    })
-    const page = await browser.newPage();
-    await page.setUserAgent(
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36'
-    )
-    await page.goto('https://www.tripadvisor.ca/', {
-        waitUntil: 'networkidle2',
-    })
-    await page.click('.fGwNR._G.B-.z._S.c.Wc.ddFHE.fRPQK.w.fNnhN.brHeh')
+        })
+        const page = await browser.newPage();
+        await page.setUserAgent(
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36'
+        )
+        await page.goto('https://www.tripadvisor.ca/', {
+            waitUntil: 'networkidle2',
+        })
+        await page.click('.fGwNR._G.B-.z._S.c.Wc.ddFHE.fRPQK.w.fNnhN.brHeh')
 
-    await page.waitForSelector('iframe')
-    console.log('iframe loaded')
+        await page.waitForSelector('iframe')
+        console.log('iframe loaded')
 
-    const elementHandle = await page.$('iframe[src="/RegistrationController?flow=sign_up_and_save&flowOrigin=login&pid=40486&hideNavigation=true&userRequestedForce=true&returnTo=&isLithium=true&locationId=-1&requireSecure=false"]')
+        const elementHandle = await page.$('iframe[src="/RegistrationController?flow=sign_up_and_save&flowOrigin=login&pid=40486&hideNavigation=true&userRequestedForce=true&returnTo=&isLithium=true&locationId=-1&requireSecure=false"]')
 
-    const frame = await elementHandle.contentFrame()
-    await frame.waitForTimeout(3000)
-    await frame.waitForSelector('#ssoButtons')
-    await frame.click('.regEmailContinue')
+        const frame = await elementHandle.contentFrame()
+        await frame.waitForTimeout(3000)
+        await frame.waitForSelector('#ssoButtons')
+        await frame.click('.regEmailContinue')
 
-    await frame.waitForSelector('#regSignIn')
-    await frame.waitForSelector('.showHidePasswordButton')
-    console.log('found sign in')
-    await frame.waitForTimeout(3000)
-    await frame.click('#regSignIn .coreRegTextLink')
-    console.log('clicked')
-    // await frame.click('button')
+        await frame.waitForSelector('#regSignIn')
+        await frame.waitForSelector('.showHidePasswordButton')
+        console.log('found sign in')
+        await frame.waitForTimeout(3000)
+        await frame.click('#regSignIn .coreRegTextLink')
+        console.log('clicked')
+        // await frame.click('button')
 
-    await frame.waitForSelector('#regSignUp\\.firstName')
-    console.log('sign up form')
+        await frame.waitForSelector('#regSignUp\\.firstName')
+        console.log('sign up form')
 
-    const firstName = "Henry"
-    const lastName = "Macca"
-    const email = `${firstName}${lastName}${Math.floor(Math.random()*100)}@gmail.com`
-    const password = "abcd1234!@#$"
+        const firstName = "Henry"
+        const lastName = "Macca"
+        const email = `${firstName}${lastName}${Math.floor(Math.random() * 100)}@gmail.com`
+        const password = "abcd1234!@#$"
 
-    // await frame.type('regSignUp.firstName', firstName)
+        // await frame.type('regSignUp.firstName', firstName)
 
-    // await frame.waitForTimeout(3000)
+        // await frame.waitForTimeout(3000)
 
-    const firstNameInput = await frame.$('#regSignUp\\.firstName')
-    await firstNameInput.type(firstName)
+        const firstNameInput = await frame.$('#regSignUp\\.firstName')
+        await firstNameInput.type(firstName)
 
-    const lastNameInput = await frame.$('#regSignUp\\.lastName')
-    await lastNameInput.type(lastName)
+        const lastNameInput = await frame.$('#regSignUp\\.lastName')
+        await lastNameInput.type(lastName)
 
-    const emailInput = await frame.$('#regSignUp\\.email')
-    // console.log(email)
-    await emailInput.type(email)
+        const emailInput = await frame.$('#regSignUp\\.email')
+        // console.log(email)
+        await emailInput.type(email)
 
-    const passwordInput = await frame.$('#regSignUp\\.password')
-    await passwordInput.type(password)
+        const passwordInput = await frame.$('#regSignUp\\.password')
+        await passwordInput.type(password)
 
-    await frame.waitForTimeout(3000)
+        await frame.waitForTimeout(3000)
 
-    await frame.click('#regSignUp .coreRegCTAWrapper .regSubmitBtnEvent')
+        await frame.click('#regSignUp .coreRegCTAWrapper .regSubmitBtnEvent')
+
+        await frame.waitForTimeout(5000)
 
 
 
- 
-    await frame.waitForTimeout(5000)
-    await page.waitForTimeout(10000)
-    await browser.close();
+        await page.goto(restaurant, {
+            waitUntil: 'networkidle2'
+        })
 
-    res.send({ message: 'hello' })
+        await page.waitForSelector('#REVIEWS')
+        await page.click('#REVIEWS .block_header a')
+
+        await page.waitForSelector('form')
+        const ratingObj = await page.$('#bubble_rating')
+        const coordinates = await ratingObj.boundingBox()
+        await page.mouse.click(coordinates.x + 5, coordinates.y + 5)
+        const reviewTitle = 'Server was being rude to other staff members and it was rather uncomfortable'
+        const reviewText = 'The food was good but one of the servers was rather rude to her colleagues and it was less than pleasant.'
+        await page.click(`#trip_type_table div:nth-child(${Math.floor(Math.random() * 5) + 1})`)
+        //COOMMMMMPPLLLLEEEETTTTEEEEEEE
+
+
+
+        const mealTypes = await page.evaluate(() => {
+            //can also use .innerHTML
+            return Array.from(document.querySelectorAll('#MEAL_TYPE option')).map(val => val.value)
+        })
+        await page.click('#MEAL_TYPE select')
+        await page.click(`#MEAL_TYPE option[value="${mealTypes[Math.floor(Math.random() * mealTypes.length)]}"]`)
+
+        const visitDate = await page.evaluate(() => {
+            return Array.from(document.querySelectorAll('#DATE_OF_VISIT option')).map(val => val.value)
+        })
+        await page.click('#DATE_OF_VISIT select')
+        await page.click(`#DATE_OF_VISIT option[value="${visitDate[Math.floor(Math.random() * visitDate.length)]}"]`)
+
+
+
+
+        await page.waitForTimeout(10000)
+        await browser.close()
+        console.log('Browser closed')
+
+
+    } catch (err) {
+        res.status(500).send(err)
+    }
+
+
+    res.send('<h1>I have completed your bidding sire</h1>')
 })
 
-app.listen(8000, () => console.log('Server started on port 8000'))
+app.listen(port, () => console.log(`Server started on port ${port}`))
