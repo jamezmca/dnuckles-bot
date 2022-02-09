@@ -96,21 +96,21 @@ app.get('/', async (req, res) => {
 
 
 
-        await page.goto(restaurant, {
-            waitUntil: 'networkidle2'
-        })
+        // await page.goto(restaurant, {
+        //     waitUntil: 'networkidle2'
+        // })
 
-        await page.waitForSelector('#REVIEWS')
-        await page.click('#REVIEWS .block_header a')
+        // await page.waitForSelector('#REVIEWS')
+        // await page.click('#REVIEWS .block_header a')
 
-        await page.waitForSelector('form')
-        const ratingObj = await page.$('#bubble_rating')
-        const coordinates = await ratingObj.boundingBox()
-        await page.mouse.click(coordinates.x + 5, coordinates.y + 5)
-        const reviewTitle = 'Server was being rude to other staff members and it was rather uncomfortable'
-        const reviewText = 'The food was good but one of the servers was rather rude to her colleagues and it was less than pleasant.'
-        await page.click(`#trip_type_table div:nth-child(${Math.floor(Math.random() * 5) + 1})`)
-        //COOMMMMMPPLLLLEEEETTTTEEEEEEE
+        // await page.waitForSelector('form')
+        // const ratingObj = await page.$('#bubble_rating')
+        // const coordinates = await ratingObj.boundingBox()
+        // await page.mouse.click(coordinates.x + 5, coordinates.y + 5)
+        // const reviewTitle = 'Server was being rude to other staff members and it was rather uncomfortable'
+        // const reviewText = 'The food was good but one of the servers was rather rude to her colleagues and it was less than pleasant.'
+        // await page.click(`#trip_type_table div:nth-child(${Math.floor(Math.random() * 5) + 1})`)
+        // //COOMMMMMPPLLLLEEEETTTTEEEEEEE
 
 
 
