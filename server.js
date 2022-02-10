@@ -17,7 +17,6 @@ app.get('/', async (req, res) => {
 
     const restaurant = req.query.url ? req.query.url : 'https://www.tripadvisor.ca/Restaurant_Review-g154943-d4104862-Reviews-Aphrodite_s_Organic_Cafe-Vancouver_British_Columbia.html'
     if (!restaurant) {
-        // await browser.close()
         return res.status(400).send({ message: 'please add restaurant url' })
     }
 
@@ -179,7 +178,6 @@ app.get('/', async (req, res) => {
     } catch (err) {
         return res.status(500).send(err)
     }
-
 
     res.send('<h1>I have completed your bidding sire</h1>')
 })
